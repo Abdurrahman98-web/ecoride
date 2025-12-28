@@ -1,0 +1,16 @@
+# Logs
+*.log
+
+# Environment
+.env
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Cache / temp
+tmp/
+cache/
