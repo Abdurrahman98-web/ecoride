@@ -16,14 +16,14 @@ Expected variables from controller:
     Proposer un covoiturage
 </h2>
 
-<?php if (empty($vehicule)): ?>
+<?php if (empty($vehicules)): ?>
 
     <div class="bg-yellow-100 text-yellow-800 p-4 rounded">
         Vous devez d’abord ajouter un véhicule pour proposer un covoiturage.
     </div>
 
     <a
-        href="/vehicule/create"
+        href="<?= BASE_URL ?>/vehicule/create"
         class="inline-block mt-4 text-eco font-semibold hover:underline"
     >
         Ajouter un véhicule
@@ -34,7 +34,7 @@ Expected variables from controller:
 <div class="max-w-xl bg-white p-6 rounded shadow">
 
     <!-- ADD RIDE FORM -->
-    <form method="POST" action="/rides/store" class="space-y-4">
+    <form method="POST" action="/ecoride/index.php?controller=ride&action=store" class="space-y-4"></form>
         <!-- CSRF TOKEN (optional but good practice) -->
     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf'] ?? '' ?>">
 
@@ -128,7 +128,7 @@ Expected variables from controller:
                 required
                 class="w-full border border-gray-300 rounded px-3 py-2"
             >
-                <?php foreach ($vehicule as $v): ?>
+                <?php foreach ($vehicules as $v): ?>
                     <option value="<?= (int)$v['vehicule_id'] ?>">
                         <?= htmlspecialchars($v['marque']) ?>
                         <?= htmlspecialchars($v['modele']) ?>
@@ -188,4 +188,4 @@ Expected variables from controller:
 <?php
 require BASE_PATH . '/app/views/layouts/footer.php';
 ?>
-// make connection to addride founction
+ <!-- make connection to addride founction -->

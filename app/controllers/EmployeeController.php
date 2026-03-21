@@ -1,6 +1,5 @@
-//burdaan devam  (14/12/25 10;20)
 <?php
-
+//burdaan devam  (14/12/25 10;20)
 class EmployeeController
 {
     /* ============================================================
@@ -26,14 +25,14 @@ class EmployeeController
 
         $problematicRides = $rideModel->getProblematicRides();
 
-        /* ------------------------------------------------------------
-           VIEW REQUIRED
-           ------------------------------------------------------------
-           views/employee/index.php
-           - List pending reviews (approve / refuse buttons)
-           - List problematic rides with details
-        ------------------------------------------------------------ */
-        require "views/employee/index.php";
+          /* ------------------------------------------------------------
+              VIEW REQUIRED
+              ------------------------------------------------------------
+              views/employee/dashboard.php
+              - List pending reviews (approve / refuse buttons)
+              - List problematic rides with details
+          ------------------------------------------------------------ */
+          require BASE_PATH . "/app/views/employee/dashboard.php";
     }
 
 
@@ -47,16 +46,17 @@ class EmployeeController
             exit;
         }
 
-        if (!isset($_GET["avis_id"])) {
+        // accept POST or GET
+        $avisId = $_POST['avis_id'] ?? $_GET['avis_id'] ?? null;
+
+        if (!$avisId) {
             die("Avis ID missing.");
         }
-
-        $avisId = $_GET["avis_id"];
 
         $avisModel = new Avis();
         $avisModel->validerAvis($avisId);
 
-        header("Location: employee.php?validated=1");
+        header("Location: " . BASE_URL . "/employee?validated=1");
         exit;
     }
 
@@ -71,16 +71,17 @@ class EmployeeController
             exit;
         }
 
-        if (!isset($_GET["avis_id"])) {
+        // accept POST or GET
+        $avisId = $_POST['avis_id'] ?? $_GET['avis_id'] ?? null;
+
+        if (!$avisId) {
             die("Avis ID missing.");
         }
-
-        $avisId = $_GET["avis_id"];
 
         $avisModel = new Avis();
         $avisModel->refuserAvis($avisId);
 
-        header("Location: employee.php?refused=1");
+        header("Location: " . BASE_URL . "/employee?refused=1");
         exit;
     }
 }

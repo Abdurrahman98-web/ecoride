@@ -16,7 +16,7 @@ require BASE_PATH . '/app/views/layouts/header.php'; // we need define the BASE_
     <?php endif; ?>
 
     <!-- LOGIN FORM -->
-    <form method="POST" action="/login" class="space-y-4">
+    <form method="POST" action="/ecoride/login" class="space-y-4">
 
         <!-- EMAIL -->
         <div>
@@ -59,7 +59,7 @@ require BASE_PATH . '/app/views/layouts/header.php'; // we need define the BASE_
     <!-- REGISTER LINK -->
     <p class="text-sm text-center mt-4">
         Pas encore de compte ?
-        <a href="/register" class="text-eco font-semibold hover:underline">
+        <a href="<?php echo BASE_URL; ?>/register" class="text-eco font-semibold hover:underline">
             Créer un compte
         </a>
     </p>

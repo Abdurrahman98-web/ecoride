@@ -1,5 +1,6 @@
 <?php
 // app/views/layouts/header.php
+//i must add correct path to href links
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -34,13 +35,13 @@
         </h1>
 
         <nav class="space-x-4 text-sm">
-            <a href="/rides" class="hover:underline">Rides</a>
+            <a href="<?php echo BASE_URL; ?>/ride" class="hover:underline">Rides</a>
 
             <?php if (class_exists('Session') && Session::get('user_id')): ?>
-                <a href="/logout" class="hover:underline">Logout</a>
+                <a href="<?php echo BASE_URL; ?>/logout" class="hover:underline">Logout</a>
             <?php else: ?>
-                <a href="/login" class="hover:underline">Login</a>
-                <a href="/register" class="hover:underline">Register</a>
+                <a href="<?php echo BASE_URL; ?>/login" class="hover:underline">Login</a>
+                <a href="<?php echo BASE_URL; ?>/register" class="hover:underline">Register</a>
             <?php endif; ?>
         </nav>
     </div>
@@ -48,5 +49,5 @@
 
 <!-- MAIN CONTENT -->
 <main class="container mx-auto px-4">
-    // The main content will be injected here by the specific views,and then we close the tags in footer.php
-    // updates by a.a at 05:10 24/12/25
+ <!-- The main content will be injected here by the specific views,and then we close the tags in footer.php -->
+ <!-- updates by a.a at 05:10 24/12/25 -->

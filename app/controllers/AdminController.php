@@ -8,7 +8,7 @@ class AdminController
     public function index()
     {
         if (!Session::has("user_id")) {
-            header("Location: login.php");
+            header("Location: " . BASE_URL . "/login");
             exit;
         }
 
@@ -36,7 +36,7 @@ class AdminController
            - Total credits
            - User list (suspend / activate)
         ------------------------------------------------------------ */
-        require "views/admin/index.php";
+        require BASE_PATH . "/app/views/admin/dashboard.php";
     }
 
 
@@ -51,17 +51,65 @@ class AdminController
 
         $userModel = new User();
 
-        $hashed = password_hash($_POST["password"], PASSWORD_DEFAULT);
+        // Collect fields from POST
+        $nom = $_POST['nom'] ?? '';
+        $prenom = $_POST['prenom'] ?? '';
+        $telephone = $_POST['telephone'] ?? '';
+        $adresse = $_POST['adresse'] ?? '';
+        $date_naissance = $_POST['date_naissance'] ?? null;
+        $compte_suspendu = isset($_POST['compte_suspendu']) ? 1 : 0;
+        $pseudo = $_POST['pseudo'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        // Basic validation
+        if (empty($pseudo) || empty($email) || empty($password)) {
+            die('Pseudo, email and password are required.');
+        }
+
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
 
         $userId = $userModel->createEmployee(
-            $_POST["pseudo"],
-            $_POST["email"],
+            $nom,
+            $prenom,
+            $telephone,
+            $adresse,
+            $date_naissance,
+            $compte_suspendu,
+            $pseudo,
+            $email,
             $hashed
         );
+        require_once BASE_PATH . '/app/models/Role.php';
 
-        header("Location: admin.php?employee_created=1");
+        // Basic validation: ensure we have a valid inserted user id
+        if (!$userId || !is_numeric($userId)) {
+            die('Failed to create user or invalid user id returned.');
+        }
+
+        // Assign a role to the newly created employee. Use posted role if present.
+        $roleModel = new Role();
+        $selectedRole = isset($_POST['role']) && !empty($_POST['role']) ? (int)$_POST['role'] : (int)Role::ROLE_EMPLOYE;
+
+        // Verify role exists
+        $roleRow = $roleModel->getRole($selectedRole);
+        if (!$roleRow) {
+            die('Selected role does not exist in the database.');
+        }
+
+        // Try to add role and handle possible DB errors
+        try {
+            $res = $roleModel->addRoleToUser($userId, $selectedRole);
+            if ($res === false) {
+                // addRoleToUser returns false when role already assigned
+                // that's not fatal, continue
+            }
+        } catch (Exception $e) {
+            die('Database error while assigning role: ' . $e->getMessage());
+        }
+
+        header("Location: " . BASE_URL . "/admin?employee_created=1");
         exit;
-        // vieww eklenncek
     }
 
 
@@ -70,14 +118,11 @@ class AdminController
        ============================================================ */
     public function suspend()
     {
-        if (!isset($_GET["user_id"])) {
-            die("User ID missing.");
-        }
-
+        $userId = $_REQUEST['user_id'] ?? null;
+        if (!$userId) { die('User ID missing.'); }
         $userModel = new User();
-        $userModel->suspendUser($_GET["user_id"]);
-
-        header("Location: admin.php?suspended=1");
+        $userModel->suspendUser($userId);
+        header("Location: " . BASE_URL . "/admin?suspended=1");
         exit;
     }
 
@@ -87,14 +132,11 @@ class AdminController
        ============================================================ */
     public function activate()
     {
-        if (!isset($_GET["user_id"])) {
-            die("User ID missing.");
-        }
-
+        $userId = $_REQUEST['user_id'] ?? null;
+        if (!$userId) { die('User ID missing.'); }
         $userModel = new User();
-        $userModel->activateUser($_GET["user_id"]);
-
-        header("Location: admin.php?activated=1");
+        $userModel->activateUser($userId);
+        header("Location: " . BASE_URL . "/admin?activated=1");
         exit;
     }
 }

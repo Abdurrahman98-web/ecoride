@@ -18,7 +18,7 @@ class AvisController
 
         // VIEW: avis_list.php SHOULD BE CREATED LATER
         // This view will show all comments + ratings for this specific ride.
-        require "views/avis/avis_list.php";//view eklenecek &&&&#####@@@
+        require BASE_PATH . "/app/views/avis/avis_list.php";//view eklenecek &&&&#####@@@
     }
 
 
@@ -50,7 +50,7 @@ class AvisController
 
         // VIEW: avis_add.php SHOULD BE CREATED LATER
         // This view displays a form (rating + comment textarea)
-        require "views/avis/avis_add.php"; //view eklenecek &&&&#####@@@
+        require BASE_PATH . "/app/views/avis/avis_add.php"; //view eklenecek &&&&#####@@@
     }
 
 

@@ -92,5 +92,5 @@ Expected variables from controller:
 <?php
 require BASE_PATH . '/app/views/layouts/footer.php';
 ?>
-// eof at 25/12/25 // devam egolicique kisimi arastirilsin
-// *rides degil ride ,egolicique olmasa else olmali 
+ <!-- eof at 25/12/25 // devam egolicique kisimi arastirilsin
+ *rides degil ride ,egolicique olmasa else olmali  -->

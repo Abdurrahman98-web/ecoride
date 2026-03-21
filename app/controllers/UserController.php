@@ -1,5 +1,5 @@
 <?php
-
+require_once BASE_PATH . '/app/models/Role.php';
 class UserController {
 
     /* ======================================
@@ -17,9 +17,10 @@ class UserController {
         $roleModel = new Role();
 
         $user = $userModel->getUserById($userId);
-        $roles = $roleModel->getRole($userId);
+        // get roles for this user (previous code incorrectly called getRole)
+        $roles = $roleModel->getRolesByUser($userId);
 
-        require 'views/user/profile.php';//VIew cağrısı
+        require BASE_PATH . '/app/views/user/profile.php';//VIew cağrısı// daha yapilmadi
     }
 
 
@@ -63,13 +64,15 @@ class UserController {
             header("Location: login.php");
             exit;
         }
+        require_once BASE_PATH . '/app/models/Role.php';
+         
 
         $userId = Session::get('user_id');
         $roleModel = new Role();
 
         $userRoles = $roleModel->getRolesByUser($userId);
-
-        require 'views/user/choose_role.php';//VIew cağrısı
+        
+        require BASE_PATH . '/app/views/user/choose_role.php';//VIew cağrısı daha yapilmadi
     }
 
 
@@ -93,21 +96,27 @@ class UserController {
 
         $selectedRoles = $_POST['roles'] ?? [];
 
-        // önce eski rolleri sil
-        $roleModel->removeRoleFromUser($userId,$selectedRoles);
+        // önce mevcut rolleri kaldır (tek tek)
+        $currentRoles = $roleModel->getRolesByUser($userId);
+        foreach ($currentRoles as $r) {
+            $roleModel->removeRoleFromUser($userId, $r['role_id']);
+        }
 
         // sonra yeni rolleri ekle
         foreach ($selectedRoles as $roleId) {
-            $roleModel->addRoleToUser($userId, $roleId);
+            $roleModel->addRoleToUser($userId, (int)$roleId);
         }
+        // Eğer kullanıcı artık 'chauffeur' rolüne sahipse → araç ekleme sayfasına yönlendir
+        $base = defined('BASE_URL') ? BASE_URL : '/ecoride';
 
-        // Eğer chauffeur seçildi ise → zorunlu alanlar doldurulmalı
-        if (in_array(Role::ROLE_CHAUFFEUR, $selectedRoles)) {
-            header("Location: vehicule_add.php");//VIew cağrısı
+        if ($roleModel->userHasRole($userId, 'chauffeur')) {
+            header('Location: ' . $base . '/vehicule/create');
             exit;
         }
 
-        header("Location: espace.php");//VIew cağrısı
+        // Aksi halde 'rides' sayfasına yönlendir
+        header('Location: ' . $base . '/ride');
+        
         exit;
     }
 }

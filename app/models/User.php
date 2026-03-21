@@ -3,11 +3,12 @@ require_once __DIR__ . '/../core/Model.php';
 
 class User extends Model {
 
-    public function register($nom, $prenom, $email, $pass, $pseudo) {
+    public function register($email, $pass, $pseudo) {
         $sql = "INSERT INTO utilisateur 
-                (nom, prenom, email, mot_de_passe, pseudo, credit)
-                VALUES (?, ?, ?, ?, ?, 20)";
-        return $this->query($sql, [$nom, $prenom, $email, $pass, $pseudo]);
+                (email, mot_de_passe, pseudo, credit)
+                VALUES (?, ?, ?, 20)";
+            $this->query($sql, [$email, $pass, $pseudo]);
+            return $this->lastInsertId();
     }
 
     public function login($email) {
@@ -119,22 +120,28 @@ public function creditsPerDay($date) {
     /* ============================
          GET ALL USERS
          ============================ */
-     public function getAllUsers() {
-          $sql = "SELECT * FROM utilisateur ORDER BY utilisateur_id DESC";
-          return $this->query($sql)->fetchAll();
 
-     
+public function getAllUsers() {
+    $sql = "SELECT u.*,
+                   COALESCE(GROUP_CONCAT(r.libelle SEPARATOR ', '), '') AS roles
+            FROM utilisateur u
+            LEFT JOIN utilisateur_role ur ON ur.utilisateur_id = u.utilisateur_id
+            LEFT JOIN role r ON r.role_id = ur.role_id
+            GROUP BY u.utilisateur_id
+            ORDER BY u.utilisateur_id DESC";
+    return $this->query($sql)->fetchAll();
 }
     /* ============================
          CREATE EMPLOYEE ACCOUNT
          ============================ */
-     public function createEmployee($pseudo, $email, $hashedPassword) {
-          $sql = "INSERT INTO utilisateur 
-                  (pseudo, email, mot_de_passe, role, credit)
-                  VALUES (?, ?, ?, 'EMPLOYEE', 0)";
-          $this->query($sql, [$pseudo, $email, $hashedPassword]);
-          return $this->lastInsertId();
-     }
+    public function createEmployee($nom, $prenom, $telephone, $adresse, $date_naissance, $compte_suspendu, $pseudo, $email, $hashedPassword) {
+        // Insert employee with full profile fields. Ensure your DB has these columns.
+        $sql = "INSERT INTO utilisateur 
+               (nom, prenom, telephone, adresse, date_naissance, compte_suspendu, pseudo, email, mot_de_passe, credit)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
+        $this->query($sql, [$nom, $prenom, $telephone, $adresse, $date_naissance, $compte_suspendu, $pseudo, $email, $hashedPassword]);
+        return $this->lastInsertId();
+    }
      /* ============================
          SUSPEND USER / EMPLOYEE
          ============================ */

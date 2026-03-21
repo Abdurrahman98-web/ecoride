@@ -71,7 +71,7 @@ class ParticipationController
         // VIEW: participation_confirm.php MUST BE CREATED LATER
         // This page should ask: "Do you REALLY want to join this ride?"
         // With a button that posts to participationController->confirmJoin()
-        require "views/participation/participation_confirm.php";
+        require BASE_PATH . "/app/views/participation/participation_confirm.php";
     }
 
 
@@ -160,7 +160,7 @@ class ParticipationController
         ------------------------------------------------------------ */
         // VIEW: participation_cancel_confirm.php MUST BE CREATED LATER
         // This view should ask: "Cancel participation? YES / NO"
-        require "views/participation/participation_cancel_confirm.php";
+        require BASE_PATH . "/app/views/participation/participation_cancel_confirm.php";
     }
 
 

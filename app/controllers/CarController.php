@@ -25,7 +25,7 @@ class VehiculeController {
 
         // VIEW: vehicules_list.php SHOULD BE CREATED LATER @@@@@#####
         // (Vehicle list page: shows table of vehicules + buttons edit/delete)
-        require "views/vehicule/index.php";// vehicule/list.php
+        require BASE_PATH . "/app/views/vehicule/index.php";
 
     }
 
@@ -44,7 +44,7 @@ class VehiculeController {
 
         // VIEW: vehicule_add.php SHOULD BE CREATED LATER @@@&&&!!!!
         // (Form: marque, modele, couleur, energie, immatriculation, date)
-        require "views/vehicule/vehicule_add.php";
+        require BASE_PATH . "/app/views/vehicule/create.php";
     }
 
 
@@ -85,7 +85,8 @@ class VehiculeController {
             $nbPlaces
         );
 
-        header("Location: vehicules.php?added=1"); //view eklenecek ////view index.php/create.php var vehicules.php
+        // header("Location: vehicules.php?added=1"); //view eklenecek ////view index.php/create.php var vehicules.php
+        header("Location: /ecoride/ride/create");// After adding a vehicle, redirect to create ride page (since usually next step is to create a ride with that vehicle).
         exit;
     }
 
@@ -115,7 +116,7 @@ class VehiculeController {
 
         // VIEW: vehicule_edit.php SHOULD BE CREATED LATER
         // (Form pre-filled with vehicle data)
-        require "views/vehicule/vehicule_edit.php"; //view index.php/create.php var vehicules.php
+        require BASE_PATH . "/app/views/vehicule/vehicule_edit.php"; //view index.php/create.php var vehicules.php
     }
 
 

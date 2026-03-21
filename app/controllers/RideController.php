@@ -27,11 +27,17 @@ class RideController
             }
         }
 
+        // If no search performed, show upcoming rides by default
+        if (empty($rides)) {
+            $rideModel = new Ride();
+            $rides = $rideModel->upcomingRides(10);
+        }
+
         // VIEW: views/ride/index.php
         // - Search form
         // - Ride list
         // - Suggested date message???
-        require BASE_PATH . "/views/ride/index.php";
+        require BASE_PATH . "/app/views/ride/index.php";
     }
 
 
@@ -62,7 +68,7 @@ class RideController
         // - Vehicle info
         // - Avis list
         // - Join button
-        require BASE_PATH . "/views/ride/show.php";
+        require BASE_PATH . "/app/views/ride/show.php";
         header("Location: views/ride/show.php");//bu veyaa core/router olabilir.
         exit; 
     }
@@ -211,5 +217,5 @@ class RideController
     }
 }
 
-// End of RideController.php guncellenmesi gerkir(fzrazi ve ilkel kod )
-// ended at 14/12/25 09/36.
+/*  End of RideController.php guncellenmesi gerkir(fzrazi ve ilkel kod )
+  ended at 14/12/25 09/36.*/

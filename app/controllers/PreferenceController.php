@@ -27,7 +27,7 @@ class PreferenceController {
         $preferences = $prefModel->getByUser($userId);
         $custom = $prefModel->getchuffeurPreferences($userId);
 
-        require 'views/preference/preferences_form.php';//VIew cağrısı
+        require BASE_PATH . '/app/views/preference/preferences_form.php';//VIew cağrısı
     }
 
 

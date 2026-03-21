@@ -17,7 +17,7 @@ require  BASE_PATH .'/app/views/layouts/header.php';// we need define the BASE_P
     <?php endif; ?>
 
     <!-- REGISTER FORM -->
-    <form method="POST" action="/register" class="space-y-4">
+    <form method="POST" action="<?php echo BASE_URL; ?>/register" class="space-y-4">
 
         <!-- PSEUDO -->
         <div>
@@ -87,6 +87,6 @@ require  BASE_PATH .'/app/views/layouts/header.php';// we need define the BASE_P
 <?php
 require  BASE_PATH . '/app/views/layouts/footer.php';// we need define the BASE_PATH in index.php(?)
 ?>
-//devlopped by a.a at 24/12/2025 22:59
-// end of file auth. 
-// Base_path" defined in public/index.php at line 2 in 03:00 25/12/2025. 
+<!-- devlopped by a.a at 24/12/2025 22:59
+ end of file auth. 
+ Base_path" defined in public/index.php at line 2 in 03:00 25/12/2025. (ont changent) -->

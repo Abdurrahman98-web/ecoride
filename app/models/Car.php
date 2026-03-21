@@ -25,7 +25,7 @@ class Vehicule extends Model {
 
     public function addVehicule($userId, $marque, $modele, $couleur, $energie, $immatriculation, $datePremiere, $nbPlaces) 
     {
-        $sql = "INSERT INTO vehicule (utilisateur_id, marque, modele, couleur, energie, immatriculation, date_premiere_immatriculation, nb_places)
+        $sql = "INSERT INTO vehicule  (utilisateur_id, marque, modele, couleur, energie, immatriculation, date_premiere_immatriculation, nb_places)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         return $this->query($sql, [
